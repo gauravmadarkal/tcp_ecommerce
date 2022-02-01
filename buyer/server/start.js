@@ -7,20 +7,20 @@ const handleRequests = async (req, client) => {
 	switch(req.msgId) {
 		case "DISPLAY_CART":
 			const cart = await getData('cart');
-			client.write(JSON.stringify(getDisplayCartResponseMSG(cart)));
+			client.write(JSON.stringify(getDisplayCartResponseMSG(cart, req.timestamp)));
 			break;
 		case "SEARCH_ITEMS":
 			const { category, keywords } = req.data;
 			const products = await getData('products');
 			const filteredProducts = products.filter(p => p.itemCategory === category && (keywords.length === 0 || keywords.filter(k => p.keywords.indexOf(k.toLowerCase()) !== -1).length > 0))
-			client.write(JSON.stringify(getSearchItemsResponseMSG(filteredProducts)));
+			client.write(JSON.stringify(getSearchItemsResponseMSG(filteredProducts, req.timestamp)));
 			break;
 		case "ADD_TO_CART":
 			const { itemId, quantity } = req.data;
 			const newCart = await getData('cart');
 			newCart.push({ itemId, quantity });
 			await updateData('cart', newCart);
-			client.write(JSON.stringify(getRequestCompletedMSG("ADD_TO_CART")));
+			client.write(JSON.stringify(getRequestCompletedMSG("ADD_TO_CART", null, req.timestamp)));
 			break;
 		case "REMOVE_FROM_CART":
 			const { itemId: iId, quantity: q } = req.data;
@@ -32,11 +32,11 @@ const handleRequests = async (req, client) => {
 				oldCart = oldCart.filter(o => o.itemId !== iId);
 			}
 			await updateData('cart', oldCart);
-			client.write(JSON.stringify(getRequestCompletedMSG("REMOVE_FROM_CART")));
+			client.write(JSON.stringify(getRequestCompletedMSG("REMOVE_FROM_CART", null, req.timestamp)));
 			break;
 		case "CLEAR_CART":
 			await updateData('cart', []);
-			client.write(JSON.stringify(getRequestCompletedMSG("CLEAR_CART")));
+			client.write(JSON.stringify(getRequestCompletedMSG("CLEAR_CART", null, req.timestamp)));
 			break;
 	}
 }

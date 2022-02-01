@@ -62,15 +62,21 @@ const handleResponse = (res, client) => {
 		case "DISPLAY_CART":
 		case "SEARCH_ITEMS":
 			console.log(res.data);
+			if (res.timestamp) {
+				console.log('Time for completion', Date.now() - res.timestamp);
+			}
 			break;
 		case "REQUEST_COMPLETED":
-			console.log('-----------REQUEST COMPLETED-----------')
+			console.log('-----------REQUEST COMPLETED-----------');
+			if (res.timestamp) {
+				console.log('Time for completion', Date.now() - res.timestamp);
+			}
 			break;
 	}
 	printOptions(client);
 }
 
-function getConnection(connName){
+function getConnection(connName) {
     const option = {
         host: details.buyer.host,
         port: details.buyer.port

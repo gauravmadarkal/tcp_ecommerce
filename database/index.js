@@ -50,6 +50,9 @@ const serverInstance = net.createServer(function(client) {
     client.on('timeout', function () {
         // console.log('Client request time out. ');
     });
+	client.on("error", function(err) {
+		console.log(err.message);
+	});
 });
 
 const start = () => {

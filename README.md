@@ -78,4 +78,14 @@ const updateData = async (dataId, newData) => {
 ```
 
 # Latency Details
-WIP
+## BUYER
+|Add item to cart|Remove from cart|Clear Cart|Search item for sale|Display cart|
+| --- | --- | --- | --- | --- |
+|13ms|13ms|3ms|33ms|9ms|
+
+## SELLER
+|Put item for sale|Change the sale price|Remove item from sale|Display items currently on sale|
+| --- | --- | --- | --- |
+|27ms|34ms|11ms|33ms|46ms|
+
+The latency here is higher than expected because the buyer/seller server has to communicate with the database server in order to get data and put data. So an additional socket connection has to be made. And also the print statements take a good amount of time to compute and print the result.

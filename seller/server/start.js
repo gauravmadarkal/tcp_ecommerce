@@ -16,7 +16,7 @@ const handleRequests = async (req, client) => {
 				products.push(productData.filter(p => p.itemId === productId)[0])
 				return productId;
 			});
-			client.write(JSON.stringify(displayItemsForSellerMSGResponse(sellerId, products)));
+			client.write(JSON.stringify(displayItemsForSellerMSGResponse(sellerId, products, req.timestamp)));
 			break;
 		case "PUT_ITEM_SALE":
 			const item = req.item;
@@ -27,7 +27,7 @@ const handleRequests = async (req, client) => {
 			sellersProductsData[sellerId].push(id);
 			await updateData('products', productData);
 			await updateData('sellers_products', sellersProductsData)
-			client.write(JSON.stringify(getRequestCompletedMSG("PUT_ITEM_SALE", sellersData)))
+			client.write(JSON.stringify(getRequestCompletedMSG("PUT_ITEM_SALE", sellersData, req.timestamp)))
 			break;
 		case "CHANGE_SALE_PRICE":
 			console.log(req.data)
@@ -36,7 +36,7 @@ const handleRequests = async (req, client) => {
 			if (index !== -1) {
 				productData[index].salePrice = newSalePrice;
 				await updateData('products', productData);
-				client.write(JSON.stringify(getRequestCompletedMSG("CHANGE_SALE_PRICE", sellersData)))
+				client.write(JSON.stringify(getRequestCompletedMSG("CHANGE_SALE_PRICE", sellersData, req.timestamp)))
 			} else {
 				client.write(JSON.stringify(getServerMessage
 					("product not found", sellersData)))
@@ -53,7 +53,7 @@ const handleRequests = async (req, client) => {
 				}
 				await updateData('products', productData);
 			}
-			client.write(JSON.stringify(getRequestCompletedMSG("REMOVE_ITEM_FROM_SALE", sellersData)))
+			client.write(JSON.stringify(getRequestCompletedMSG("REMOVE_ITEM_FROM_SALE", sellersData, req.timestamp)))
 			break;
 	}
 }
@@ -90,6 +90,9 @@ const serverInstance = net.createServer(function(client) {
     client.on('timeout', function () {
         // console.log('Client request time out. ');
     });
+	client.on("error", function(err) {
+		console.log(err.message);
+	});
 });
 
 const start = () => {

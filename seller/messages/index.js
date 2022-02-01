@@ -9,7 +9,8 @@ const updateDataMSG = (dataId, newData) => {
 	return {
 		msgId: "UPDATE_DATA",
 		dataId,
-		newData
+		newData,
+		timestamp: Date.now()
 	}
 }
 
@@ -17,10 +18,11 @@ const GET_SELLER_MSG = {
 	msgId: "GET_SELLERS"
 }
 
-const getSellersMSGResponse = (sellers) => {
+const getSellersMSGResponse = (sellers, timestamp=Date.now()) => {
 	return {
 		msgId: "GET_SELLERS",
-		data: sellers
+		data: sellers,
+		timestamp
 	}
 }
 
@@ -28,30 +30,34 @@ const putItemForSaleMSG = (item, sellerId) => {
 	return {
 		msgId: "PUT_ITEM_SALE",
 		sellerId,
-		item
+		item,
+		timestamp: Date.now()
 	}
 }
 
 const displayItemsForSellerMSG = (sellerId) => {
 	return {
 		msgId: "DISPLAY_ITEMS_FOR_SELLER",
-		sellerId
+		sellerId,
+		timestamp: Date.now()
 	}
 }
 
-const displayItemsForSellerMSGResponse = (sellerId, data) => {
+const displayItemsForSellerMSGResponse = (sellerId, data, timestamp=Date.now()) => {
 	return {
 		msgId: "DISPLAY_ITEMS_FOR_SELLER",
 		sellerId,
-		data
+		data,
+		timestamp
 	}
 }
 
-const getRequestCompletedMSG = (completedRequestId, data) => {
+const getRequestCompletedMSG = (completedRequestId, data, timestamp=Date.now()) => {
 	return {
 		msgId: "REQUEST_COMPLETED",
 		completedRequestId,
-		data
+		data,
+		timestamp
 	}
 }
 
@@ -59,7 +65,8 @@ const changeSalePriceMSG = (sellerId, data) => {
 	return {
 		msgId: "CHANGE_SALE_PRICE",
 		data,
-		sellerId
+		sellerId,
+		timestamp: Date.now()
 	}
 }
 
@@ -67,7 +74,8 @@ const removeItemFromSaleMSG = (sellerId, data) => {
 	return {
 		msgId: "REMOVE_ITEM_FROM_SALE",
 		data,
-		sellerId
+		sellerId,
+		timestamp: Date.now()
 	}
 }
 

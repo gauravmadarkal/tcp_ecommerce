@@ -79,8 +79,9 @@ const handleResponse = (client, res) => {
 		case "DISPLAY_ITEMS_FOR_SELLER":
 			console.log(res.data);
 			printOptions(client, null, res.sellerId);
+			console.log(`Time for completion: ${Date.now() - res.timestamp}ms`);
 	}
-} 
+}
 
 function getConnection(connName){
     const option = {
@@ -100,6 +101,7 @@ function getConnection(connName){
 			printOptions(client, res.data);
 		} else if (res.msgId === 'REQUEST_COMPLETED') {
 			console.log("---------------REQUEST COMPLETED---------------");
+			console.log(`Time for completion: ${Date.now() - res.timestamp}ms`);
 			printOptions(client, res.data);
 		} else if (res.msgId === 'SERVER_MSG') {
 			console.log("-----------RECEIVED MSG FROM SERVER-------------");
